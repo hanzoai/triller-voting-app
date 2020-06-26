@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { promisify } from 'util'
 import redis from 'redis'
+import https from 'https'
+import fs from 'fs'
 
 import { IS_DEV, EVENT, PASSWORD } from './settings'
 
@@ -131,3 +133,10 @@ let port = IS_DEV ? 80 : 80
 // Start Express Server
 app.listen(port)
 console.log('Start Listening on ' + port)
+
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app).listen(443, () => {
+  console.log('Listening... on 443')
+})
