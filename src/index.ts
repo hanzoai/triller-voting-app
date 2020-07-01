@@ -7,6 +7,40 @@ import fs from 'fs'
 
 import { IS_DEV, EVENT, PASSWORD } from './settings'
 
+const handles = [
+  'jehovanisig',
+  'piema100',
+  'daniellejacoby',
+  'k1ngjmenace',
+  'kyanpalmer',
+  'youngdellzc9',
+  'irisofficial',
+  'alcalderon',
+  'soulex',
+  'edvarsten',
+  'bcruz99',
+  'carolenamusic',
+  'cecethekidd',
+  'therealletrevious',
+  'ms.karoline',
+  'iamjdhumnl',
+  'wymondsr',
+  'ricoxrolando',
+  'devon7arnold',
+  'kaliakeylah',
+  'song_birdy',
+  'issthakidd.leee',
+  'mannysolo',
+  'realnohajvegas',
+  'jermarcusriggins',
+  'daneamar',
+  'missshefali',
+  'sanni',
+  't-lyon',
+  'mungowona',
+  'jrice42',
+]
+
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -102,21 +136,21 @@ app.get('/stats/', async (req, res, next) => {
 
     let zscore = promisify(client.zscore).bind(client)
 
-    let ret = {}
-    // let ps = []
+    let ret: any = {}
+    let ps = []
 
-    // let fn = async (image) => {
-    //   ret[image.name] = {
-    //     score: parseInt(await zscore(EVENT + '_votes', image.name), 10) || 0,
-    //     views: parseInt(await zscore(EVENT + '_views', image.name), 10) || 0,
-    //   }
-    // }
+    let fn = async (handle: string) => {
+      ret[handle] = {
+        score: parseInt(await zscore(EVENT + '_votes', handle), 10) || 0,
+        views: parseInt(await zscore(EVENT + '_views', handle), 10) || 0,
+      }
+    }
 
-    // for (let k in images) {
-    //   ps.push(fn(images[k]))
-    // }
+    for (let k in handles) {
+      ps.push(fn(handles[k]))
+    }
 
-    // await Promise.all(ps)
+    await Promise.all(ps)
 
     res.json(ret)
   } catch (err) {
